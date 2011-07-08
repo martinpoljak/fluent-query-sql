@@ -359,8 +359,7 @@ module FluentQuery
 
             public
             def quote_string(string)
-                string = string.dup
-                string.gsub!("'", "''")
+                string = string.gsub("'", "''")
                 string.gsub!("\\", "\\\\\\\\")
                 
                 return "'" << string << "'"

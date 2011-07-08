@@ -48,7 +48,7 @@ module FluentQuery
                                         elsif first.kind_of? Hash
                                             t_name = first.keys.first
                                             t_alias = first.values.first
-                                            stack << (processor.quote_identifier(t_name).dup << " AS " << processor.quote_identifier(t_alias))
+                                            stack << (processor.quote_identifier(t_name) + " AS " + processor.quote_identifier(t_alias))
                                         end
                                     end
 

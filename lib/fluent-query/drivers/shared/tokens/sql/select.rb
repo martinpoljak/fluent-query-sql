@@ -115,7 +115,7 @@ module FluentQuery
                                         key = @_driver.quote_identifier(key)
                                         value = @_driver.quote_identifier(value)
                                         
-                                        fields << (key.to_s.dup << " AS " << value.to_s)
+                                        fields << (key.to_s + " AS " + value.to_s)
                                     end
 
                                     if not first

@@ -27,7 +27,7 @@ module FluentQuery
                                 arguments = token.arguments
 
                                 # INSERT token
-                                if token.name = :insert
+                                if token.name == :insert
 
                                     # Checks for arguments
                                     if (not arguments[0].kind_of? Symbol) or (not arguments[1].kind_of? Hash)

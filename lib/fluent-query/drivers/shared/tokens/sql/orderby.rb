@@ -74,7 +74,7 @@ module FluentQuery
                                     # Closes opened native token with unknown tokens
                                     if unknown.length > 0
                                         native = _class::new(@_driver, @_query, unknown)
-                                        stack << (native.render!.dup << ", ")
+                                        stack << (native.render! + ", ")
                                         unknown = [ ]
                                     end
 

@@ -32,7 +32,7 @@ module FluentQuery
 
                                     # Checks for arguments
                                     if (not arguments.first.kind_of? Symbol)
-                                        raise FluentQuery::Drivers::Exception::("Symbol arguments expected for update() method.")
+                                        raise FluentQuery::Drivers::Exception::("Symbol arguments expected for #update method.")
                                     end
 
                                     # Process
