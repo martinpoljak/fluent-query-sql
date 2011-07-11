@@ -19,6 +19,68 @@ module FluentQuery
             ##
             # Contains relevant methods index for this driver.
             #
+                
+            RELEVANT = [:select, :insert, :update, :delete, :truncate, :set, :begin, :commit, :union]
+
+            ##
+            # Contains ordering for typicall queries.
+            #
+            
+            ORDERING = {
+                :select => [
+                    :select, :from, :join, :groupBy, :having, :where, :orderBy, :limit, :offset
+                ],
+                :insert => [
+                    :insert, :values
+                ],
+                :update => [
+                    :update, :set, :where
+                ],
+                :delete => [
+                    :delete, :where
+                ],
+                :truncate => [
+                    :truncate, :table, :cascade
+                ],
+                :set => [
+                    :set
+                ],
+                :union => [
+                    :union
+                ]
+            }
+
+            ##
+            # Contains operators list.
+            #
+            # Operators are defined as tokens whose multiple parameters in Array
+            # are appropriate to join by itself.
+            #
+            
+            OPERATORS = {
+                :and => "AND",
+                :or => "OR"
+            }
+
+            ##
+            # Indicates, appropriate token should be present by one real token, but more input tokens.
+            #
+
+            AGREGATE = [:where, :orderBy, :select]
+
+            ##
+            # Indicates token aliases.
+            #
+
+            ALIASES = {
+                :leftJoin => :join,
+                :rightJoin => :join,
+                :fullJoin => :join
+            }
+
+            ##
+            # Contains relevant methods index for this driver.
+            #
 
             @relevant
 
@@ -27,7 +89,6 @@ module FluentQuery
             #
 
             @ordering
-
 
             ##
             # Contains operators list.
@@ -75,12 +136,21 @@ module FluentQuery
 
             public
             def initialize(connection)
-                if self.instance_of? FluentQuery::Drivers::SQL
+                if self.instance_of? SQL
                     not_implemented
                 end
 
                 super(connection)
+
+                @relevant = SQL::RELEVANT
+                @ordering = SQL::ORDERING
+                @operators = SQL::OPERATORS
+                @aliases = SQL::ALIASES
+
                 @agregate = { }
+                SQL::AGREGATE.each do |i| 
+                    @agregate[i] = true
+                end
             end
             
             ####
@@ -442,7 +512,37 @@ module FluentQuery
             def open_connection(settings)
                 not_implemented
             end
+            
+            ##
+            # Executes query conditionally.
+            #
+            # If query isn't suitable for executing, returns it. In otherwise
+            # returns result or number of changed rows.
+            #
 
+            public
+            def execute_conditionally(query, sym, *args, &block)
+                case query.type
+                    when :insert
+                        if (args[0].kind_of? Symbol) and (args[1].kind_of? Hash)
+                            result = query.do!
+                        end
+                    when :begin
+                        if args.empty?
+                            result = query.execute!
+                        end
+                    when :truncate
+                        if args.first.kind_of? Symbol
+                            result = query.execute!
+                        end
+                    when :commit, :rollback
+                        result = query.execute!
+                    else
+                        result = nil
+                end
+                
+                return result
+            end
             
         end
     end
