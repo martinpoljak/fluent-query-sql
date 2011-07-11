@@ -33,7 +33,7 @@ module FluentQuery
                             
                             @_subtokens.each do |token|
                                 arguments = token.arguments
-
+ 
                                 # Known process
                                 if token.name == :where
                                     length = arguments.length

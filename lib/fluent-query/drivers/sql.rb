@@ -123,6 +123,12 @@ module FluentQuery
             #
 
             @_nconnection
+
+            ##
+            # Indicates tokens which has been already required.
+            #
+            
+            @_tokens_required
                             
             ##
             # Holds internal token struct.
@@ -151,6 +157,8 @@ module FluentQuery
                 SQL::AGREGATE.each do |i| 
                     @agregate[i] = true
                 end
+                
+                @_tokens_required = { }
             end
             
             ####
@@ -174,7 +182,7 @@ module FluentQuery
                 # Checks
                 if @ordering.has_key? group
                     # Creates index
-                    if not cache.has_key? group   
+                    if not cache.has_key? group  
                         @ordering[group].each do |item|
                             cache[group][item] = true
                         end
@@ -330,14 +338,14 @@ module FluentQuery
                     
                     if (name == :__init__) and (not subtokens.nil?)
                         init_tokens = [inittoken_class::new(self, query, subtokens)]
-
+                    
                     elsif @agregate.has_key? name
                         agregates[name] << data
                         
                     elsif self.known_token? type, name
                         token_data = self._generate_token(name, query, subtokens)
                         native_tokens << token_data
-
+                    
                     end
                     
                 end
@@ -354,7 +362,7 @@ module FluentQuery
                     token_data = self._generate_token(first.name, query, first.subtokens)
                     native_tokens << token_data
                 end
-                
+
                 # Renders in ordered way
                 if not init_tokens.nil?
                     init_tokens.each do |token|
@@ -386,7 +394,7 @@ module FluentQuery
             def _generate_token(name, query, subtokens)
                 classobject = self._require_token(name)
                 tokens = [classobject::new(self, query, subtokens)]
-
+                
                 ###
 
                 return self.class::TOKEN::new(name, tokens)
