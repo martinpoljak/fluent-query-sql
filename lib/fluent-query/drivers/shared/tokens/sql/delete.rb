@@ -1,5 +1,5 @@
 # encoding: utf-8
-
+require "hash-utils/object"   # >= 0.17.0
 require "fluent-query/drivers/shared/tokens/sql"
 require "fluent-query/drivers/exception"
 
@@ -30,11 +30,10 @@ module FluentQuery
                                 # FROM token
                                 
                                 if token.name == :from
-
                                     first = arguments.first
 
                                     # Checks for arguments
-                                    if (not first.kind_of? Symbol)
+                                    if (not first.symbol?)
                                         raise FluentQuery::Drivers::Exception::new("Symbol argument expected for #from method.")
                                     end
 

@@ -2,6 +2,7 @@
 require "fluent-query/query"
 require "fluent-query/drivers/shared/tokens/sql"
 require "fluent-query/drivers/exception"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -36,7 +37,7 @@ module FluentQuery
                                         queries = [ ]
 
                                         arguments.each do |argument|
-                                            if argument.kind_of? String
+                                            if argument.string?
                                                 queries << argument
                                             elsif argument.kind_of? FluentQuery::Query
                                                 queries << argument.build!

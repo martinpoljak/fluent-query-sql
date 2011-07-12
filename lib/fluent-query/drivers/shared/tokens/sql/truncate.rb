@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
 require "fluent-query/drivers/exception"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -31,7 +32,7 @@ module FluentQuery
                                 if token.name == :truncate
 
                                     # Checks for arguments
-                                    if (not arguments.first.kind_of? Symbol)
+                                    if (not arguments.first.symbol?)
                                         raise FluentQuery::Drivers::Exception::new("Symbol argument expected for #truncate method.")
                                     end
 

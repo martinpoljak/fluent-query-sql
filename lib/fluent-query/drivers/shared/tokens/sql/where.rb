@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -40,11 +41,11 @@ module FluentQuery
                                     first = arguments.first
                                     
                                     if length > 0
-                                        if (length > 1) or (first.kind_of? String)
+                                        if (length > 1) or (first.string?)
                                             stack << processor.process_formatted(arguments, mode)
-                                        elsif first.kind_of? Array
+                                        elsif first.array?
                                             stack << first.join(operator)
-                                        elsif first.kind_of? Hash
+                                        elsif first.hash?
                                             stack << processor.process_hash(first, operator)
                                         end
                                     end
@@ -76,7 +77,7 @@ module FluentQuery
                             stack.each do |item|
                                 if item.kind_of? _class
                                     result << item.render!
-                                elsif item.kind_of? String
+                                elsif item.string?
                                     if not first
                                         result << operator << " "
                                     else

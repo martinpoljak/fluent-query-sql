@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -41,11 +42,11 @@ module FluentQuery
                                     first = arguments.first
                                     
                                     if length > 0
-                                        if first.kind_of? Symbol
+                                        if first.symbol?
                                             stack << processor.process_identifiers(arguments)
-                                        elsif (length > 1) or (first.kind_of? String)
+                                        elsif (length > 1) or (first.string?)
                                             stack << processor.process_formatted(arguments, mode)
-                                        elsif first.kind_of? Hash
+                                        elsif first.hash?
                                             t_name = first.keys.first
                                             t_alias = first.values.first
                                             stack << (processor.quote_identifier(t_name) + " AS " + processor.quote_identifier(t_alias))
@@ -79,7 +80,7 @@ module FluentQuery
                             stack.each do |item|
                                 if item.kind_of? _class
                                     result << item.render!
-                                elsif item.kind_of? String               
+                                elsif item.string?               
                                     result << item
                                 end
 

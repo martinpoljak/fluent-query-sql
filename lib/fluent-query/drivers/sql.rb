@@ -66,7 +66,7 @@ module FluentQuery
             # Indicates, appropriate token should be present by one real token, but more input tokens.
             #
 
-            AGREGATE = [:where, :orderBy, :select]
+            AGREGATE = [:where, :orderBy, :select, :groupBy, :having]
 
             ##
             # Indicates token aliases.

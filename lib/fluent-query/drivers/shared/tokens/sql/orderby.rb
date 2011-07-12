@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -43,7 +44,7 @@ module FluentQuery
                                     close_custom = false
                                     
                                     if length > 0
-                                        if (length > 1) or (arguments.first.kind_of? String)
+                                        if (length > 1) or (arguments.first.string?)
                                             value = processor.process_formatted(arguments, mode).dup
                                             custom.push(value)
 
@@ -53,11 +54,11 @@ module FluentQuery
                                                 fields = [ ]
                                             end
                                             
-                                        elsif arguments.first.kind_of? Array
+                                        elsif arguments.first.array?
                                             fields += arguments.first
                                             close_custom = true
                                             
-                                        elsif arguments.first.kind_of? Symbol
+                                        elsif arguments.first.symbol?
                                             fields += arguments
                                             close_custom = true
 

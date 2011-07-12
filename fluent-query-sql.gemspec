@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Martin Kozák}]
-  s.date = %q{2011-05-23}
+  s.date = %q{2011-07-12}
   s.email = %q{martinkozak@martinkozak.net}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -18,10 +18,12 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "VERSION",
+    "fluent-query-sql.gemspec",
     "lib/fluent-query/drivers/shared/tokens/sql.rb",
     "lib/fluent-query/drivers/shared/tokens/sql/delete.rb",
     "lib/fluent-query/drivers/shared/tokens/sql/from.rb",
@@ -40,7 +42,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/martinkozak/fluent-query-sql}
   s.licenses = [%q{MIT}]
   s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.3}
+  s.rubygems_version = %q{1.8.5}
   s.summary = %q{Generic SQL support for the Fluent Query.}
 
   if s.respond_to? :specification_version then

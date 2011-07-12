@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
 require "fluent-query/drivers/exception"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -39,9 +40,9 @@ module FluentQuery
 
                                     # Checks for arguments
                                     if length > 0
-                                        if (length > 1) or (arguments.first.kind_of? String)
+                                        if (length > 1) or (arguments.first.string?)
                                             stack << processor.process_formatted(arguments, mode)
-                                        elsif arguments.first.kind_of? Hash
+                                        elsif arguments.first.hash?
                                             stack << processor.process_hash(arguments.first, ", ", :assigning)
                                         end
                                     else
@@ -69,7 +70,7 @@ module FluentQuery
                             stack.each do |item|
                                 if item.kind_of? _class
                                     result << item.render!
-                                elsif item.kind_of? String
+                                elsif item.string?
                                     if not first
                                         result << operator << " "
                                     else

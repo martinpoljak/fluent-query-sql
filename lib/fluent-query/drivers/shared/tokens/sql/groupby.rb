@@ -1,5 +1,6 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -43,13 +44,13 @@ module FluentQuery
                                     if length > 0
                                         first = arguments.first
                                         
-                                        if first.kind_of? Symbol
+                                        if first.symbol?
                                             stack << arguments
-                                        elsif first.kind_of? String
+                                        elsif first.string?
                                             stack << processor.process_formatted(arguments, mode)
                                         else
                                             arguments.each do |argument|
-                                                if argument.kind_of? Array
+                                                if argument.array?
                                                     fields += argument
                                                 end                        
                                             end
@@ -86,7 +87,7 @@ module FluentQuery
                             
                             stack.each do |item|
                                 
-                                if item.kind_of? Array
+                                if item.array?
                                     if not first
                                         result << ", "
                                     end
@@ -94,12 +95,12 @@ module FluentQuery
                                     result << processor.process_identifiers(item) 
                                     first = false
                                     
-                                elsif item.kind_of? String                            
+                                elsif item.string?                            
                                     if not first
                                         result << ", "
                                     end
         
-                                    result << item
+                                    result << item.strip!
                                     first = false
                                     
                                 end

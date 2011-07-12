@@ -1,6 +1,8 @@
 # encoding: utf-8
 require "fluent-query/drivers/shared/tokens/sql"
 require "fluent-query/drivers/exception"
+require "hash-utils/object"   # >= 0.17.0
+require "hash-utils/array"
 
 module FluentQuery
     module Drivers
@@ -30,14 +32,14 @@ module FluentQuery
                                 if token.name == :insert
 
                                     # Checks for arguments
-                                    if (not arguments[0].kind_of? Symbol) or (not arguments[1].kind_of? Hash)
+                                    if (not arguments.first.symbol?) or (not arguments.second.hash?)
                                        raise FluentQuery::Drivers::Exception::new("Symbol and Hash arguments expected for #insert method.")
                                     end
 
                                     # Process
-                                    table = processor.quote_identifier(arguments[0])
-                                    fields = processor.process_identifiers(arguments[1].keys)
-                                    values = processor.process_array(arguments[1].values)
+                                    table = processor.quote_identifier(arguments.first)
+                                    fields = processor.process_identifiers(arguments.second.keys)
+                                    values = processor.process_array(arguments.second.values)
                                     
                                     result << table << " (" << fields << ") VALUES (" << values << ")"
 
