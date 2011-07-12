@@ -2,6 +2,7 @@
 require "abstract"
 require "hash-utils/module"   # >= 0.13.0
 require "hash-utils/string"   # >= 0.15.0
+require "hash-utils/array"    # >= 0.17.0
 
 require "fluent-query/driver"
 require "fluent-query/queries/sql"
@@ -312,7 +313,7 @@ module FluentQuery
 
                         last_known = [item]
                         
-                    elsif not last_known.kind_of? Array
+                    elsif not last_known.array?
                         tokens.push(token_struct::new(:__init__, [item]))
                         
                     else
@@ -532,7 +533,7 @@ module FluentQuery
             def execute_conditionally(query, sym, *args, &block)
                 case query.type
                     when :insert
-                        if (args[0].kind_of? Symbol) and (args[1].kind_of? Hash)
+                        if (args.first.symbol?) and (args.second.hash?)
                             result = query.do!
                         end
                     when :begin
@@ -540,7 +541,7 @@ module FluentQuery
                             result = query.execute!
                         end
                     when :truncate
-                        if args.first.kind_of? Symbol
+                        if args.first.symbol?
                             result = query.execute!
                         end
                     when :commit, :rollback

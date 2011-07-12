@@ -19,7 +19,6 @@ module FluentQuery
             #
 
             def method_missing(sym, *args, &block)
-            
                 # If name starts with underscore, strips non-alfa numeric characters out
                 sym = sym.to_s
                 
@@ -28,7 +27,6 @@ module FluentQuery
                 end
                 
                 return super(sym.to_sym, *args, &block)
-                
             end
             
             ##

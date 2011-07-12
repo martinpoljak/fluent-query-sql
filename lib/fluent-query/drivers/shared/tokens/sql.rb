@@ -1,4 +1,5 @@
 # encoding: utf-8
+require "hash-utils/object"   # >= 0.17.0
 
 module FluentQuery
     module Drivers
@@ -80,11 +81,11 @@ module FluentQuery
 
                             first = arguments.first
                             
-                            if first.kind_of? Array
+                            if first.array?
                                 arguments_result = processor.process_array(first, glue)
-                            elsif first.kind_of? Hash
+                            elsif first.hash?
                                 arguments_result = processor.process_hash(first, glue)
-                            elsif first.kind_of? Symbol
+                            elsif first.symbol?
                                 arguments_result = processor.process_identifiers(arguments)
                             else
                                 arguments_result = processor.process_formatted(arguments, mode)
