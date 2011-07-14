@@ -21,7 +21,7 @@ module FluentQuery
             # Contains relevant methods index for this driver.
             #
                 
-            RELEVANT = [:select, :insert, :update, :delete, :truncate, :set, :begin, :commit, :union]
+            RELEVANT = [:select, :insert, :update, :delete, :truncate, :set, :begin, :commit, :union, :rollback]
 
             ##
             # Contains ordering for typicall queries.
