@@ -196,7 +196,7 @@ module FluentQuery
 
                 return result
                 
-            end                
+            end    
 
             ##
             # Builds given query.
@@ -257,12 +257,12 @@ module FluentQuery
             ##
             # Indicates which query subclass to use.
             #
-
+ 
             public
             def query_class
                 FluentQuery::Queries::SQL
             end
-            
+             
             ##
             # Builds given query.
             #
@@ -521,12 +521,25 @@ module FluentQuery
             def open_connection(settings)
                 not_implemented
             end
+                                
+            ##
+            # Checks query conditionally. It's called after first token
+            # of the query.
+            #
+            # @see #execute_conditionally
+            # @since 0.9.2
+            #
+            
+            public
+            def check_conditionally(query, sym, *args, &block)
+                self.execute_conditionally(query, sym, *args, &block)
+            end
             
             ##
             # Executes query conditionally.
             #
             # If query isn't suitable for executing, returns it. In otherwise
-            # returns result or number of changed rows.
+            # returns +nil+, result or number of changed rows.
             #
 
             public
