@@ -36,7 +36,7 @@ module FluentQuery
             #
             
             def processor
-                super()
+                super
             end
             
             ##

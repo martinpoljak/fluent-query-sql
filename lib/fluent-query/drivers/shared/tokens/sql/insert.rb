@@ -30,6 +30,7 @@ module FluentQuery
 
                                 # INSERT token
                                 if token.name == :insert
+                                    values = arguments.second.values
 
                                     # Checks for arguments
                                     if (not arguments.first.symbol?) or (not arguments.second.hash?)
@@ -39,7 +40,20 @@ module FluentQuery
                                     # Process
                                     table = processor.quote_identifier(arguments.first)
                                     fields = processor.process_identifiers(arguments.second.keys)
-                                    values = processor.process_array(arguments.second.values)
+                                    
+                                    if mode == :prepare
+                                        values = values.map do |item|
+                                            if item != ??
+                                                processor.quote_value(i)
+                                            else
+                                                item
+                                            end
+                                        end
+                                        
+                                        values = values.join(', ')
+                                    else
+                                        values = processor.process_array(values)
+                                    end
                                     
                                     result << table << " (" << fields << ") VALUES (" << values << ")"
 
