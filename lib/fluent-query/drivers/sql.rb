@@ -1,8 +1,10 @@
 # encoding: utf-8
+require "set"
 require "abstract"
 require "hash-utils/module"   # >= 0.13.0
 require "hash-utils/string"   # >= 0.15.0
 require "hash-utils/array"    # >= 0.17.0
+require "hash-utils/object"   # >= 0.8.0
 
 require "fluent-query/driver"
 require "fluent-query/queries/sql"
@@ -21,7 +23,7 @@ module FluentQuery
             # Contains relevant methods index for this driver.
             #
                 
-            RELEVANT = [:select, :insert, :update, :delete, :truncate, :set, :begin, :commit, :union, :rollback]
+            RELEVANT = Set::new [:select, :insert, :update, :delete, :truncate, :set, :begin, :commit, :union, :rollback]
 
             ##
             # Contains ordering for typicall queries.
@@ -67,7 +69,7 @@ module FluentQuery
             # Indicates, appropriate token should be present by one real token, but more input tokens.
             #
 
-            AGREGATE = [:where, :orderBy, :select, :groupBy, :having]
+            AGREGATE = Set::new [:where, :orderBy, :select, :groupBy, :having]
 
             ##
             # Indicates token aliases.
@@ -153,12 +155,8 @@ module FluentQuery
                 @ordering = SQL::ORDERING
                 @operators = SQL::OPERATORS
                 @aliases = SQL::ALIASES
+                @agregate = SQL::AGREGATE
 
-                @agregate = { }
-                SQL::AGREGATE.each do |i| 
-                    @agregate[i] = true
-                end
-                
                 @_tokens_required = { }
             end
             
@@ -170,7 +168,7 @@ module FluentQuery
 
             public
             def relevant_method?(name)
-                @relevant.include? name
+                name.in? @relevant
             end
             
             ##
@@ -340,7 +338,7 @@ module FluentQuery
                     if (name == :__init__) and (not subtokens.nil?)
                         init_tokens = [inittoken_class::new(self, query, subtokens)]
                     
-                    elsif @agregate.has_key? name
+                    elsif name.in? @agregate
                         agregates[name] << data
                         
                     elsif self.known_token? type, name
