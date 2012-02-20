@@ -439,7 +439,7 @@ module FluentQuery
                 string = string.gsub("'", "''")
                 string.gsub!("\\", "\\\\\\\\")
                 
-                return "'" << string << "'"
+                return "'" + string + "'"
             end
 
             ##
@@ -466,7 +466,7 @@ module FluentQuery
 
             public
             def quote_identifier(field)
-                '"' << field.to_s.gsub(".", '"."') << '"'
+                '"' + field.to_s.gsub!(".", '"."') + '"'
             end
 
             ##
@@ -502,7 +502,7 @@ module FluentQuery
 
             public
             def quote_subquery(subquery)
-                "(" << subquery << ")"
+                "(" + subquery + ")"
             end
 
 
