@@ -466,7 +466,7 @@ module FluentQuery
 
             public
             def quote_identifier(field)
-                '"' + field.to_s.gsub!(".", '"."') + '"'
+                '"' + field.to_s.gsub(".", '"."') + '"'
             end
 
             ##
